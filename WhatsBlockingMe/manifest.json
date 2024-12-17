@@ -1,0 +1,10 @@
+{
+  "Id": "stedee.WhatsBlockingMe",
+  "AssemblyPath": "WhatsBlockingMe.dll",
+  "Metadata": {
+    "Name": "WhatsBlockingMe",
+    "Author": "stedee",
+    "Version": "0.0.1",
+    "Description": "A debug mod to print info to the loading screen and add an option to bypass it"
+  }
+}
