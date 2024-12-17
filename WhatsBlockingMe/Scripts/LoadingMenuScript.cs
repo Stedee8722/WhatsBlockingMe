@@ -12,10 +12,9 @@ namespace WhatsBlockingMe
             // extend
             var extendsWaiter = new MultiTokenWaiter([
                 t => t.Type is TokenType.PrExtends,
-                t => t.Type is TokenType.Identifier,
                 t => t.Type is TokenType.Newline
-            ]);
-
+            ], allowPartialMatch: true);
+            
             // t >= 4:
             var beatCounterWaiter = new MultiTokenWaiter([
                 t => t.Type is TokenType.CfIf,
@@ -24,7 +23,7 @@ namespace WhatsBlockingMe
                 t => t is ConstantToken {Value: IntVariant {Value: 4}},
                 t => t.Type is TokenType.Colon
             ]);
-
+            
             // var packets_recieved = 0
             var initWaiter = new MultiTokenWaiter([
                 t => t.Type is TokenType.PrVar,
@@ -39,7 +38,21 @@ namespace WhatsBlockingMe
                 t => t is IdentifierToken {Name:"packets_recieved"},
                 t => t.Type is TokenType.OpAssignAdd,
                 t => t is ConstantToken {Value: IntVariant {Value: 1}},
-                t => t.Type is TokenType.Newline && t.AssociatedData == 3
+                t => t.Type is TokenType.Newline && t.AssociatedData == 2
+            ]);
+
+            var removeFromListWaiter = new MultiTokenWaiter([
+                t => t.Type is TokenType.CfIf,
+                t => t is IdentifierToken {Name:"Network"},
+                t => t.Type is TokenType.Period,
+                t => t is IdentifierToken {Name:"FLUSH_PACKET_INFORMATION"},
+                t => t.Type is TokenType.BracketOpen,
+                t => t is IdentifierToken {Name:"key"},
+                t => t.Type is TokenType.BracketClose,
+                t => t.Type is TokenType.OpGreater,
+                t => t is ConstantToken {Value: IntVariant {Value: 0}},
+                t => t.Type is TokenType.Colon,
+                t => t.Type is TokenType.Newline && t.AssociatedData == 4
             ]);
 
             foreach (var token in tokens)
@@ -54,11 +67,12 @@ namespace WhatsBlockingMe
                     yield return new IdentifierToken("b");
                     yield return new Token(TokenType.OpAssign);
                     yield return new ConstantToken(new IntVariant(0));
-                    yield return new Token(TokenType.Newline, 0);
+                    yield return new Token(TokenType.Newline);
                 }
                 else if (beatCounterWaiter.Check(token))
                 {
                     Console.WriteLine("Counting var b");
+                    yield return token;
 
                     // b += 1
                     yield return new Token(TokenType.Newline, 2);
@@ -226,6 +240,24 @@ namespace WhatsBlockingMe
                     yield return new Token(TokenType.OpAdd);
                     yield return new IdentifierToken("player");
                     yield return new Token(TokenType.Newline, 2);
+                }
+                else if (removeFromListWaiter.Check(token))
+                {
+                    Console.WriteLine("injects remove code");
+                    yield return token;
+
+                    // not_sent.erase(key)
+                    yield return new IdentifierToken("not_sent");
+                    yield return new Token(TokenType.Period);
+                    yield return new IdentifierToken("erase");
+                    yield return new Token(TokenType.ParenthesisOpen);
+                    yield return new IdentifierToken("key");
+                    yield return new Token(TokenType.ParenthesisClose);
+                    yield return new Token(TokenType.Newline, 4);
+                }
+                else
+                {
+                    yield return token;
                 }
             }
         }

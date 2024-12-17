@@ -1,0 +1,9 @@
+﻿{
+  "dependencies": [
+    "NotNet-GDWeave-2.0.14"
+  ],
+  "description": "A debug mod to print info to the loading screen and add an option to bypass it",
+  "name": "WhatsBlockingMe",
+  "version_number": "0.0.1",
+  "website_url": "https://github.com/Stedee8722/WhatsBlockingMe"
+}
