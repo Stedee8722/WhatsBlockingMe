@@ -6,5 +6,7 @@
 bin/
 obj/
 *.pck
+*.zip
 
 manifestation/
+/project/mods/desktop.ini
