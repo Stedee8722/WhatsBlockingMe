@@ -1,7 +1,6 @@
 ﻿using GDWeave.Godot;
 using GDWeave.Godot.Variants;
 using GDWeave.Modding;
-using Serilog;
 
 namespace WhatsBlockingMe
 {
