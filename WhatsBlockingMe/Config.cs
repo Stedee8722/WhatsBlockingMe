@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace WhatsBlockingMe;
+﻿namespace WhatsBlockingMe;
 
 public class Config {
 }
