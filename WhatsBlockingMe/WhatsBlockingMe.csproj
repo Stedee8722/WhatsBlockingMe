@@ -21,6 +21,6 @@
             <_SourceFiles Include="$(OutDir)\**\*.*" />
         </ItemGroup>
 
-        <Copy SourceFiles="@(_SourceFiles)" DestinationFolder="$(GDWeavePath)/mods/$(AssemblyName)" />
+		<Copy SourceFiles="@(_SourceFiles)" DestinationFolder="$(GDWeavePath)/mods/$(modAuthor)-$(AssemblyName)" />
     </Target>
 </Project>
